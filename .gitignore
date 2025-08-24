@@ -1,0 +1,5 @@
+/output/
+*.h5
+*.vtk
+*.bp
+*.log
