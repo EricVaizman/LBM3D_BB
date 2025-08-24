@@ -87,17 +87,12 @@ function motion!(
     ensure_bb_capacity!(bcstruct, rank, needed; slack=1.2, growth=2)
 
     # 4) build CSR on GPU using bcstruct fields
-    bb_lidxs, bb_dirs, bb_ptr, nnz = compile_bb_data!(
+    nnz = compile_bb_data!(
         bcstruct.bb_dirs, bcstruct.bb_lidxs, bcstruct.bb_ptr, cnt,
-        mask_s_local, mask_bb_local, nbr_lli
+        mask_s_local, mask_bb_local, nbr_lli, bcstruct
     )
 
     # 5) Update half-time kinematics (lattice units)
-    bcstruct.nnz      = nnz
-    bcstruct.bb_lidxs = bcstruct.bb_lidxs   # already passed in; still explicit is fine
-    bcstruct.bb_dirs  = bcstruct.bb_dirs
-    bcstruct.bb_ptr   = bcstruct.bb_ptr
-
     bcstruct.U_c_lat = U_cH * dt / h
     bcstruct.V_c_lat = V_cH * dt / h
     bcstruct.ω_lat   = ωH   * dt

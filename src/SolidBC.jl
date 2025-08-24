@@ -61,33 +61,33 @@ function init_SolidBCStruct(
         # Field order must match the old struct definition:
         # bb_lidxs, bb_dirs, bb_ptr, bbOpp, U_c_lat, V_c_lat, ω_lat, x_c_lat, y_c_lat, nnz, q_arr
         return SolidBCStruct(
-            bb_lidxs,
-            bb_dirs,
-            bb_ptr,
-            bbOpp,
-            0f0,   # U_c_lat
-            0f0,   # V_c_lat
-            0f0,   # ω_lat
-            0f0,   # x_c_lat
-            0f0,   # y_c_lat
-            nnz32, # nnz
-            nothing # q_arr (unused for SBB)
+            bb_lidxs = bb_lidxs,
+            bb_dirs  = bb_dirs,
+            bb_ptr   = bb_ptr,
+            bbOpp    = bbOpp,
+            nnz      = nnz32,
+            U_c_lat  = 0f0,
+            V_c_lat  = 0f0,
+            ω_lat    = 0f0,
+            x_c_lat  = 0f0,
+            y_c_lat  = 0f0,
+            q_arr    = nothing
         )
 
     elseif bc == "IBB"
         # q_arr stays nothing; IBB will compute q on-the-fly in the kernel
         return SolidBCStruct(
-            bb_lidxs,
-            bb_dirs,
-            bb_ptr,
-            bbOpp,
-            0f0,   # U_c_lat
-            0f0,   # V_c_lat
-            0f0,   # ω_lat
-            0f0,   # x_c_lat
-            0f0,   # y_c_lat
-            nnz32, # nnz
-            nothing # q_arr
+            bb_lidxs = bb_lidxs,
+            bb_dirs  = bb_dirs,
+            bb_ptr   = bb_ptr,
+            bbOpp    = bbOpp,
+            nnz      = nnz32,
+            U_c_lat  = 0f0,
+            V_c_lat  = 0f0,
+            ω_lat    = 0f0,
+            x_c_lat  = 0f0,
+            y_c_lat  = 0f0,
+            q_arr    = nothing
         )
 
     else
