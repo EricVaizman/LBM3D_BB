@@ -2,7 +2,7 @@ module SolidBC
 
 using CUDA
 using ..Parameters
-using ..Geometry
+import ..Geometry: _rot_to_body, _naca_upper_lower_y, phi_cylinder_lat, phi_airfoil_lat
 using ..Collision: INV_CS2
 
 export solid_BC!, init_SolidBCStruct, SolidBCStruct

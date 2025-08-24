@@ -4,8 +4,8 @@ module MainCore
 
 include("Parameters.jl")
 include("Collision.jl")
-include("SolidBC.jl")
 include("Geometry.jl")
+include("SolidBC.jl")
 include("Partitioning.jl")
 include("Initialization.jl")
 include("ComputeMacro.jl")
@@ -21,8 +21,8 @@ include("Motion.jl")
 
 using .Parameters
 using .Collision
-using .SolidBC
 using .Geometry
+using .SolidBC
 using .Partitioning
 using .ComputeMacro
 using .Exchange
