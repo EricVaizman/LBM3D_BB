@@ -12,6 +12,5 @@ export JULIA_CPU_TARGET=native
 # Run your Julia MPI program
 N_GPUS=$(nvidia-smi -L | wc -l)
 mpirun -np $(( N_GPUS + 1 )) julia --compile=all --project=. scripts/run_HPC.jl
-#mpirun -np 3 julia --compile=all --project=. scripts/run_HPC.jl
 
 
