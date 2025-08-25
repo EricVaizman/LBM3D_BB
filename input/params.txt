@@ -17,7 +17,7 @@ W_inf:   | 0.0
 rho_inf: | 1.0
 dt:      | 1.0
 Lambda:  | 0.1875
-n_max:   | 40000
-n_save:  | 5000
+n_max:   | 1
+n_save:  | 1
 BC:      | IBB
 Coll:    | BGK
