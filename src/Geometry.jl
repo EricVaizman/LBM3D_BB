@@ -2,7 +2,6 @@ module Geometry
 
 using ..Parameters
 using CUDA
-import SolidBC: SolidBCStruct
 
 export uw_at_wall_lat_planar, phi_world_lat_3Dplanar, generate_mask_s_local!, generate_mask_bb_local!, compile_bb_data!, generate_plotmask, SolidMaskState, init_solid_mask_state
 
@@ -273,7 +272,7 @@ function compile_bb_data!(
     mask_s::CuArray{Bool},                # IN length N_local
     mask_bb::CuArray{Bool},               # IN length N_owned
     nbr_lli::CuArray{Int32,2},            # IN (q, N_owned)
-    bcstruct::SolidBCStruct
+    bcstruct
 )::Int32
 
     q        = Int32(size(nbr_lli, 1))
@@ -303,9 +302,9 @@ function compile_bb_data!(
     @cuda threads=threads_owned blocks=blocks_owned kernel_fill_bb_csr!(bb_dirs, bb_lidxs, bb_ptr, mask_s, nbr_lli, q, N_owned)
 
     bcstruct.nnz      = nnz
-    bcstruct.bb_lidxs = bcstruct.bb_lidxs   # already passed in; still explicit is fine
-    bcstruct.bb_dirs  = bcstruct.bb_dirs
-    bcstruct.bb_ptr   = bcstruct.bb_ptr
+    bcstruct.bb_lidxs = bb_lidxs  
+    bcstruct.bb_dirs  = bb_dirs
+    bcstruct.bb_ptr   = bb_ptr
 
     return nnz
 end

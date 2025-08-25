@@ -73,30 +73,17 @@ function main_simulation_HPC(comm::MPI.Comm, rank::Int64, size::Int64)
     fe = 0.154f0 * U_inf / (2*R)
     we = 2f0*pi * fe
     
+    # mot_law = MotionLaw(
+    #     t -> x_c,                    t -> 0f0,                 # x, xdot
+    #     t -> y_c - Ae*sin(we*t),     t -> -Ae*we*cos(we*t),    # y, ydot
+    #     t -> theta0,                 t -> 0f0                  # theta, thetadot
+    # )
+
     mot_law = MotionLaw(
-        t -> x_c,                    t -> 0f0,                 # x, xdot
-        t -> y_c - Ae*sin(we*t),     t -> -Ae*we*cos(we*t),    # y, ydot
-        t -> theta0,                 t -> 0f0                  # theta, thetadot
+        t -> x_c,     t -> 0f0,               
+        t -> y_c,     t -> 0f0,    
+        t -> 0f0,     t -> 0f0                
     )
-
-    # k = 0.25f0
-    # U_phys = U_inf * h / dt
-    # f      = k * U_phys / (π * chord)           # Hz
-    # ω      = 2f0 * π * f
-    # alpha_0     = deg2rad(15f0)          # mean pitch [rad]
-    # alpha_1     = deg2rad(10f0)          # amplitude  [rad]
-
-    # mot_law = MotionLaw(
-    #     t -> x_c,                  t -> 0f0,              # x, xdot
-    #     t -> y_c,                  t -> 0f0,              # y, ydot
-    #     t -> alpha_0 + alpha_1*cos(ω*t),       t -> -alpha_1*ω*sin(ω*t)    # theta, thetadot
-    # )
-
-    # mot_law = MotionLaw(
-    #     t -> x_c,     t -> 0f0,               
-    #     t -> y_c,     t -> 0f0,    
-    #     t -> 0f0,     t -> 0f0                
-    # )
 
 
 

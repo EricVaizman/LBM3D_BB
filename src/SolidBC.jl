@@ -2,10 +2,12 @@ module SolidBC
 
 using CUDA
 using ..Parameters
-import ..Geometry: _rot_to_body, _naca_upper_lower_y, phi_cylinder_lat, phi_airfoil_lat
+import ..Geometry: phi_world_lat_3Dplanar, uw_at_wall_lat_planar
 using ..Collision: INV_CS2
 
 export solid_BC!, init_SolidBCStruct, SolidBCStruct
+
+const EPS_Q = 1f-6
 
 
 
@@ -305,6 +307,7 @@ function IBB!_gpu(
     denom   = ϕb - ϕs
     no_brkt = (ϕb <= 0f0) | (ϕs >= 0f0) | (abs(denom) < 1f-8)
 
+
     if no_brkt
         # Fallback: moving SBB at half-link point
         xw = xb - 0.5f0*cx
@@ -312,9 +315,11 @@ function IBB!_gpu(
         (uwx, uwy) = uw_at_wall_lat_planar(xw, yw, x_c_lat, y_c_lat, U_c_lat, V_c_lat, ω_lat)
         ci_dot_uw  = cx*uwx + cy*uwy              # uw_z ≡ 0, cz term drops
         wdir       = @inbounds wvec[dir]
-        rho_loc    = @inbounds rho_l[i_b]
+        #rho_loc    = @inbounds rho_l[i_b]
+        rho_loc = 1f0
         corr       = 2f0 * wdir * rho_loc * ci_dot_uw * INV_CS2
         @inbounds f_old[i_opp, i_b] = f_new[dir, i_b] - corr
+
         return
     end
 
@@ -328,7 +333,8 @@ function IBB!_gpu(
     (uwx, uwy) = uw_at_wall_lat_planar(xw, yw, x_c_lat, y_c_lat, U_c_lat, V_c_lat, ω_lat)
     ci_dot_uw  = cx*uwx + cy*uwy                 # uw_z ≡ 0
     wdir       = @inbounds wvec[dir]
-    rho_loc    = @inbounds rho_l[i_b]
+    #rho_loc    = @inbounds rho_l[i_b]
+    rho_loc = 1f0
     corr       = 2f0 * wdir * rho_loc * ci_dot_uw * INV_CS2   # subtract from reconstruction
 
     if q <= 0.5f0
